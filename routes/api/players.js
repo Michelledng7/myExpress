@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const app = express();
 const uuid = require('uuid');
-const players = require('../../Players');
+const players = require('../../PlayersDB');
 
 //get all players
 router.get('/', (req, res) => {
@@ -37,4 +36,18 @@ router.post('/', (req, res) => {
 	res.json(players);
 });
 
+//update player
+router.put('/:id', (req, res) => {
+	const found = players.some((player) => player.id === parseInt(req.params.id));
+	if (found) {
+		players.forEach((player) => {
+			if (player.id === parseInt(req.params.id)) {
+				player.name = req.body.name ? req.body.name : player.name;
+				player.email = req.body.email ? req.body.email : player.email;
+				res.json({ msg: 'Player updated just now', player: player });
+			}
+		});
+	}
+	//res.json(players);
+});
 module.exports = router;
