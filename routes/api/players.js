@@ -50,4 +50,20 @@ router.put('/:id', (req, res) => {
 	}
 	//res.json(players);
 });
+
+//delete player
+router.delete('/:id', (req, res) => {
+	const found = players.some((player) => player.id === parseInt(req.params.id));
+	if (found) {
+		res.json({
+			msg: 'Player deleted',
+			players: players.filter(
+				(player) => player.id !== parseInt(req.params.id)
+			),
+		});
+	} else {
+		res.status(400).json({ msg: `No player with the id of ${req.params.id}` });
+	}
+});
+
 module.exports = router;
